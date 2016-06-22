@@ -64,4 +64,9 @@ public static class ConstantsSpacerock {
     // ~ FOR MIXED REALITY CAMERA THINGS ~ //
     public static int DEFAULT_LAYER = 0;
     public static int FOREGROUND_LAYER = 8;
+
+    public static int FIXED_UPDATE_FRAMES_DELAY = 30;
+    public static int FIXED_UPDATE_PERCENT_FRAMES_SEEN = 2;
+
+
 }

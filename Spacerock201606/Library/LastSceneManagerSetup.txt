@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_SCENES/CameraTest.unity
+- path: Assets/_SCENES/TestScene20160622.unity
   isLoaded: 1
   isActive: 1
