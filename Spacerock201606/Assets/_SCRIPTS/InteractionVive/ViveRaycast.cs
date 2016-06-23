@@ -71,24 +71,8 @@ public class ViveRaycast : MonoBehaviour {
 
     //Node[] nodes;
 
-    int stateR;
-    public GameObject rightPinchDetector;
-    //private LeapPinchDetector rightPinchDetectorScript;
-    GameObject draggedObjectR = null;
-    float distanceOfDraggedObjectR = 0.0f;
-    float originalPinchDistanceR = 0.0f;
-    Node highlightedObjectR = null;
-
-    int stateL;
-    public GameObject leftPinchDetector;
-    //private LeapPinchDetector leftPinchDetectorScript;
-    GameObject draggedObjectL = null;
-    float distanceOfDraggedObjectL = 0.0f;
-    float originalPinchDistanceL = 0.0f;
-    Node highlightedObjectL = null;
-
-    int STATE_NORMAL = 0;
-    int STATE_DRAGGING = 1;
+    ControllerState controllerStateR = new ControllerState();
+    ControllerState controllerStateL = new ControllerState();
 
     Vector3 nodeContainerStartPosition;
     Vector3 zoomPinchStartPositionL;
@@ -130,14 +114,14 @@ public class ViveRaycast : MonoBehaviour {
 
             //UpdateControlPanel();
 
-            if (stateL == STATE_DRAGGING)
+            if (controllerStateL.state == ControllerState.STATE_DRAGGING)
             { // maybe do this if the user stops moving the node around, don't do it if the node is moving a lot
-                graphGenerator.explodeSelectedNode(highlightedObjectL);
+                graphGenerator.explodeSelectedNode(controllerStateL.highlightedObject);
             }
 
-            if (stateR == STATE_DRAGGING)
+            if (controllerStateR.state == ControllerState.STATE_DRAGGING)
             {
-                graphGenerator.explodeSelectedNode(highlightedObjectR);
+                graphGenerator.explodeSelectedNode(controllerStateR.highlightedObject);
             }
         }
 
@@ -163,12 +147,14 @@ public class ViveRaycast : MonoBehaviour {
         int hoveredNodeIndex = 0;
         float dotProduct;
 
+        ControllerState controllerState = null;
+
         int state = -1;
         if( handedness == ConstantsSpacerock.RIGHT){
-            state = stateR;
+            controllerState = controllerStateR;
         }
         else{
-            state = stateL;
+            controllerState = controllerStateL;
         }
 
         if (panelState == PANEL_ON) {
@@ -190,9 +176,8 @@ public class ViveRaycast : MonoBehaviour {
 
             graphGenerator.NodesAreDraggable (true); // TODO only necessary if we have a LEAPRTS object for Leap Motion
 
-            if (state != STATE_DRAGGING && isActive) { // can start a drag
-                //Debug.Log("state != STATE_DRAGGING && isActive");
-                state = STATE_DRAGGING;
+            if (controllerState.state != ControllerState.STATE_DRAGGING && isActive) { // can start a drag
+                controllerState.state = ControllerState.STATE_DRAGGING;
 
                 for (int i = 0; i < graphGenerator.masterNodeList.Length; i++) {
                     if (graphGenerator.isLegalNode(graphGenerator.masterNodeList[i])) {
@@ -206,55 +191,47 @@ public class ViveRaycast : MonoBehaviour {
                     }
                 }
 
-                //Debug.Log("biggestDotProduct: " + biggestDotProduct);
+                // consider not interacting if the dotproduct is not large enough... below 0.9 or something
 
-                //GameObject draggedObject = null;
-                //float distanceOfDraggedObject = 0.0f;
-                float originalPinchDistance = 0.0f;
-                float distanceOfGraph = 0.0f; //TODO get the distance of graph and use that to move the container
+                //float distanceOfGraph = (graphGenerator.nodeContainer.transform.position - p).magnitude; //TODO get the distance of graph and use that to move the container
+                //Vector3 graphHeading = Vector3.Normalize(p - playerCamera.transform.position);
 
-                if (handedness == ConstantsSpacerock.RIGHT) {
-                    graphGenerator.masterNodeList[selectedNodeIndex].nodeForce.Selected ();
-                    originalPinchDistance = originalPinchDistanceR;
-                } else {
-                    graphGenerator.masterNodeList[selectedNodeIndex].nodeForce.Selected ();
-                    originalPinchDistance = originalPinchDistanceL;
-                }
+                // you could move it based on the selected node's delta position
 
-                if (handedness == ConstantsSpacerock.LEFT) {
-                    highlightedObjectL = graphGenerator.masterNodeList[selectedNodeIndex];
-                    highlightedObjectL.nodeForce.Selected ();
-                    //Debug.Log ("start highlightedObjectL.nodeForce.myTextMesh.text: " + highlightedObjectL.nodeForce.myTextMesh.text );
-                } else {
-                    highlightedObjectR = graphGenerator.masterNodeList[selectedNodeIndex];
-                    highlightedObjectR.nodeForce.Selected ();
-                    //Debug.Log ("start highlightedObjectR.nodeForce.myTextMesh.text: " + highlightedObjectR.nodeForce.myTextMesh.text );
-                }
+                controllerState.originalNodeDistance = (graphGenerator.masterNodeList[selectedNodeIndex].gameObject.transform.position - p).magnitude;
+                controllerState.originalNodeHeading = Vector3.Normalize(p - playerCamera.transform.position);
 
+                controllerState.highlightedObject = graphGenerator.masterNodeList[selectedNodeIndex];
+                controllerState.highlightedObject.nodeForce.Selected();
 
+                controllerState.originalControllerPosition = positionOfInteractable;
+
+                controllerState.originalGraphGeneratorPosition = graphGenerator.nodeContainer.transform.position;
 
 
             }
-            else if (state == STATE_DRAGGING) { // already dragging
+            else if (controllerState.state == ControllerState.STATE_DRAGGING) { // already dragging
 
                 // get distance between us and the nodecontainer
                 // map the delta angle from the node to the delta angle of the container
 
-                //graphGenerator.nodeContainer.transform.position;
-                
-                if (handedness == ConstantsSpacerock.LEFT) {
-                    if (highlightedObjectL != null) {
-                        highlightedObjectL.nodeForce.timeSelected += Time.deltaTime;
-                    }
-                } else {
-                    if (highlightedObjectR != null) {
-                        highlightedObjectR.nodeForce.timeSelected += Time.deltaTime;
-                    }
+                if (controllerState.highlightedObject != null) {
+                    controllerState.highlightedObject.nodeForce.timeSelected += Time.deltaTime;
                 }
+
+                Vector3 originalNodePosition = controllerState.originalControllerPosition + (controllerState.originalNodeHeading.normalized * controllerState.originalNodeDistance);
+                Vector3 currentNodePosition = positionOfInteractable + (controllerState.originalNodeHeading.normalized * controllerState.originalNodeDistance); //then change it so that heading is not replicated
+
+                Vector3 deltaNodePosition = originalNodePosition - currentNodePosition;
+
+                graphGenerator.nodeContainer.transform.position = controllerState.originalGraphGeneratorPosition - deltaNodePosition;
+
+                //graphGenerator.nodeContainer.transform.position = controllerGameObjectLeft.transform.position + (graphHeadingL.normalized * distanceOfGraphL);
+
             }
 
             if (!isActive) { // if you let go you're not dragging
-                state = STATE_NORMAL;
+                controllerState.state = ControllerState.STATE_NORMAL;
 
                 for (int i = 0; i < graphGenerator.masterNodeList.Length; i++)
                 {
@@ -274,30 +251,14 @@ public class ViveRaycast : MonoBehaviour {
 
                 //graphGenerator.masterNodeList[hoveredNodeIndex].nodeForce.Hovered();
 
-                if (handedness == ConstantsSpacerock.LEFT) {
-                    if (highlightedObjectL != null) {
-                        //Debug.Log ("letgo highlightedObjectL.nodeForce.myTextMesh.text: " + highlightedObjectL.nodeForce.myTextMesh.text );
-                        highlightedObjectL.nodeForce.Unselected ();
-                        graphGenerator.unselectNode ();
-                        highlightedObjectL.nodeForce.timeSelected = 0.0f;
-                        highlightedObjectL = null;
-                    }
-                } else {
-                    if (highlightedObjectR != null) {
-                        //Debug.Log ("letgo highlightedObjectR.nodeForce.myTextMesh.text: " + highlightedObjectR.nodeForce.myTextMesh.text );
-                        highlightedObjectR.nodeForce.Unselected ();
-                        graphGenerator.unselectNode ();
-                        highlightedObjectR.nodeForce.timeSelected = 0.0f;
-                        highlightedObjectR = null;
-                    }
+                if (controllerState.highlightedObject != null) {
+                    controllerState.highlightedObject.nodeForce.Unselected();
+                    graphGenerator.unselectNode();
+                    controllerState.highlightedObject.nodeForce.timeSelected = 0.0f;
+                    controllerState.highlightedObject = null;
                 }
             }
 
-            if (handedness == ConstantsSpacerock.RIGHT) {
-                stateR = state;
-            } else {
-                stateL = state;
-            }
         }
     }
 
