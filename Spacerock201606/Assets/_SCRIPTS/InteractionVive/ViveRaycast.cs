@@ -41,10 +41,10 @@ public class ViveRaycast : MonoBehaviour {
     float VIEWPANEL_EULER_X_LOWER_THRESHHOLD = 14.0f;
     float VIEWPANEL_EULER_X_UPPER_THRESHHOLD = 100.0f;
 
-    int panelState;
-    int PANEL_ON = 0;
+    int panelState = 1;
+    static public int PANEL_ON = 0;
     float turnPanelOffTimer = 0.0f;
-    int PANEL_OFF = 1;
+    static public int PANEL_OFF = 1;
     float turnPanelOnTimer = 0.0f;
 
     float PANEL_ON_TIMER_CONSTANT = 0.5f;
@@ -145,7 +145,6 @@ public class ViveRaycast : MonoBehaviour {
 
     void ControllerUpdate(SteamVR_TestThrow wand, string handedness)
     {
-
         HandleInteraction(wand.triggerPress, wand.gameObject.transform.position, handedness);
     }
 
@@ -189,10 +188,10 @@ public class ViveRaycast : MonoBehaviour {
 
         } else { // not looking at panel
 
-
-            graphGenerator.NodesAreDraggable (true);
+            graphGenerator.NodesAreDraggable (true); // TODO only necessary if we have a LEAPRTS object for Leap Motion
 
             if (state != STATE_DRAGGING && isActive) { // can start a drag
+                //Debug.Log("state != STATE_DRAGGING && isActive");
                 state = STATE_DRAGGING;
 
                 for (int i = 0; i < graphGenerator.masterNodeList.Length; i++) {
@@ -207,9 +206,12 @@ public class ViveRaycast : MonoBehaviour {
                     }
                 }
 
-                GameObject draggedObject = null;
-                float distanceOfDraggedObject = 0.0f;
+                //Debug.Log("biggestDotProduct: " + biggestDotProduct);
+
+                //GameObject draggedObject = null;
+                //float distanceOfDraggedObject = 0.0f;
                 float originalPinchDistance = 0.0f;
+                float distanceOfGraph = 0.0f; //TODO get the distance of graph and use that to move the container
 
                 if (handedness == ConstantsSpacerock.RIGHT) {
                     graphGenerator.masterNodeList[selectedNodeIndex].nodeForce.Selected ();
@@ -228,9 +230,18 @@ public class ViveRaycast : MonoBehaviour {
                     highlightedObjectR.nodeForce.Selected ();
                     //Debug.Log ("start highlightedObjectR.nodeForce.myTextMesh.text: " + highlightedObjectR.nodeForce.myTextMesh.text );
                 }
+
+
+
+
             }
             else if (state == STATE_DRAGGING) { // already dragging
 
+                // get distance between us and the nodecontainer
+                // map the delta angle from the node to the delta angle of the container
+
+                //graphGenerator.nodeContainer.transform.position;
+                
                 if (handedness == ConstantsSpacerock.LEFT) {
                     if (highlightedObjectL != null) {
                         highlightedObjectL.nodeForce.timeSelected += Time.deltaTime;

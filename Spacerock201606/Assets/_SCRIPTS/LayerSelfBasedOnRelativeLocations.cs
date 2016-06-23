@@ -12,12 +12,12 @@ public class LayerSelfBasedOnRelativeLocations : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+    
+    }
+    
+    // Update is called once per frame
+    void Update () {
+    
         // if the distance between you and the camera is less than the distance between the player and the camera, be foreground
         if(Vector3.Distance(this.transform.position, eagleEyeCamera.transform.position) < Vector3.Distance(headsetLocation.transform.position, eagleEyeCamera.transform.position))
         {

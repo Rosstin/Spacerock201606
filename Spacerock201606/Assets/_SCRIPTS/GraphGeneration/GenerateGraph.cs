@@ -196,31 +196,26 @@ public class GenerateGraph : MonoBehaviour
 
     IEnumerator generateGraphFromCSVCoroutine()
     {
-        print("pre preGraphGeneration");
         preGraphGeneration();
         print("finished preGraphGeneration");
         yield return null;
 
         if (metadataFileForCoroutine != "none")
         {
-            print("pre parseMetadata");
             parseMetadata(metadataFileForCoroutine);
             print("finished parseMetadata");
             yield return null;
         }
 
-        print("pre parseGraph");
         parseGraph(nodeFileForCoroutine, graphTypeForCoroutine, dataTypeForCoroutine);
         print("finished parseGraph");
         yield return null;
 
-        print("pre parseEdges");
         parseEdges(edgeFileForCoroutine);
         print("finished parseEdges");
         yield return null;
 
 
-        print("pre postGraphGeneration");
         postGraphGeneration();
         print("finished postGraphGeneration");
         yield return null;
