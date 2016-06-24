@@ -9,15 +9,15 @@ public class HandsRaycast : MonoBehaviour {
 
 	public GameObject toggle3DGameObject;
 	Collider toggle3DCollider;
-    ToggleLeap toggle3Dscript;
+    DiageticToggle toggle3Dscript;
 
 	public GameObject slider1;
 	Collider slider1Collider;
-	Slider slider1script;
+    DiageticSlider slider1script;
 
     public GameObject sliderFollowers;
     Collider sliderFollowersCollider;
-    Slider sliderFollowersScript;
+    DiageticSlider sliderFollowersScript;
 
     public GameObject PanelContainer;
     //todo: an object with an array of all buttons should be included 
@@ -109,13 +109,13 @@ public class HandsRaycast : MonoBehaviour {
         //leftCapsuleHandScript = leftCapsuleHandObject.GetComponent<CapsuleHand>();
 
         toggle3DCollider = toggle3DGameObject.GetComponent<Collider> ();
-        toggle3Dscript = toggle3DGameObject.GetComponent<ToggleLeap>();
+        toggle3Dscript = toggle3DGameObject.GetComponent<DiageticToggle>();
 
         slider1Collider = slider1.GetComponent<Collider> ();
-		slider1script = slider1.GetComponent<Slider> ();
+		slider1script = slider1.GetComponent<DiageticSlider> ();
 
         sliderFollowersCollider = sliderFollowers.GetComponent<Collider>();
-        sliderFollowersScript = sliderFollowers.GetComponent<Slider>();
+        sliderFollowersScript = sliderFollowers.GetComponent<DiageticSlider>();
 
     }
 
@@ -191,7 +191,7 @@ public class HandsRaycast : MonoBehaviour {
 
 	}
 
-    void NeutralizeSliderState(Slider slider)
+    void NeutralizeSliderState(DiageticSlider slider)
     {
         slider.state = slider.NORMAL;
         performSliderAction(slider.sliderType, slider.currentValue);
@@ -213,7 +213,7 @@ public class HandsRaycast : MonoBehaviour {
 
     }
 
-    void performToggleAction(ToggleLeap toggle)
+    void performToggleAction(DiageticToggle toggle)
     {
         if(toggle.toggleType == "dimensionality")
         {
@@ -230,7 +230,7 @@ public class HandsRaycast : MonoBehaviour {
 
     }
 
-    void UpdateToggleState(Collider collider, ToggleLeap toggle, Ray ray, Vector3 heading, Vector3 p, bool isActive, bool activeThisFrame, int handedness)
+    void UpdateToggleState(Collider collider, DiageticToggle toggle, Ray ray, Vector3 heading, Vector3 p, bool isActive, bool activeThisFrame, string handedness)
     {
         RaycastHit hit = new RaycastHit();
 
@@ -255,7 +255,7 @@ public class HandsRaycast : MonoBehaviour {
         }
     }
 
-    void UpdateSliderState(Collider collider, Slider slider, Ray ray, Vector3 heading, Vector3 p, bool isActive, bool activeThisFrame, int handedness){ // updating for both hands is screwing it up
+    void UpdateSliderState(Collider collider, DiageticSlider slider, Ray ray, Vector3 heading, Vector3 p, bool isActive, bool activeThisFrame, string handedness){ // updating for both hands is screwing it up
 
 		RaycastHit hit = new RaycastHit ();
 

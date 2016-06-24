@@ -15,15 +15,15 @@ public class ViveRaycast : MonoBehaviour {
 
     public GameObject toggle3DGameObject;
     Collider toggle3DCollider;
-    ToggleLeap toggle3Dscript;
+    DiageticToggle toggle3Dscript;
 
     public GameObject slider1;
     Collider slider1Collider;
-    Slider slider1script;
+    DiageticSlider slider1script;
 
     public GameObject sliderFollowers;
     Collider sliderFollowersCollider;
-    Slider sliderFollowersScript;
+    DiageticSlider sliderFollowersScript;
 
     public GameObject PanelContainer;
     //todo: an object with an array of all buttons should be included 
@@ -91,14 +91,14 @@ public class ViveRaycast : MonoBehaviour {
         wandLeft = controllerGameObjectLeft.GetComponent<SteamVR_TestThrow>();
         wandRight = controllerGameObjectRight.GetComponent<SteamVR_TestThrow>();
 
-        //toggle3DCollider = toggle3DGameObject.GetComponent<Collider> ();
-        //toggle3Dscript = toggle3DGameObject.GetComponent<ToggleLeap>();
+        toggle3DCollider = toggle3DGameObject.GetComponent<Collider> ();
+        toggle3Dscript = toggle3DGameObject.GetComponent<DiageticToggle>();
 
-        //slider1Collider = slider1.GetComponent<Collider> ();
-        //slider1script = slider1.GetComponent<Slider> ();
+        slider1Collider = slider1.GetComponent<Collider> ();
+        slider1script = slider1.GetComponent<DiageticSlider> ();
 
-        //sliderFollowersCollider = sliderFollowers.GetComponent<Collider>();
-        //sliderFollowersScript = sliderFollowers.GetComponent<Slider>();
+        sliderFollowersCollider = sliderFollowers.GetComponent<Collider>();
+        sliderFollowersScript = sliderFollowers.GetComponent<DiageticSlider>();
 
     }
 
@@ -112,7 +112,7 @@ public class ViveRaycast : MonoBehaviour {
 
             CheckDebugKeyboardActions();
 
-            //UpdateControlPanel();
+            UpdateControlPanel();
 
             if (controllerStateL.state == ControllerState.STATE_DRAGGING)
             { // maybe do this if the user stops moving the node around, don't do it if the node is moving a lot
@@ -167,10 +167,10 @@ public class ViveRaycast : MonoBehaviour {
 
             Ray myRay = new Ray (playerCamera.transform.position, heading);
 
-            //UpdateToggleState(toggle3DCollider, toggle3Dscript, myRay, heading, p, isActive, activeThisFrame, handedness);
+            UpdateToggleState(toggle3DCollider, toggle3Dscript, myRay, heading, p, isActive, handedness);
 
-            //UpdateSliderState (slider1Collider, slider1script, myRay, heading, p, isActive, activeThisFrame, handedness);
-            //UpdateSliderState(sliderFollowersCollider, sliderFollowersScript, myRay, heading, p, isActive, activeThisFrame, handedness);
+            UpdateSliderState (slider1Collider, slider1script, myRay, heading, p, isActive, handedness);
+            UpdateSliderState(sliderFollowersCollider, sliderFollowersScript, myRay, heading, p, isActive, handedness);
 
         } else { // not looking at panel
 
@@ -262,7 +262,6 @@ public class ViveRaycast : MonoBehaviour {
         }
     }
 
-    /*
     void NeutralizeButtonState() // neutralize state of all buttons in when you leave
     {
         NeutralizeSliderState(slider1script);
@@ -312,7 +311,7 @@ public class ViveRaycast : MonoBehaviour {
 
     }
 
-    void NeutralizeSliderState(Slider slider)
+    void NeutralizeSliderState(DiageticSlider slider)
     {
         slider.state = slider.NORMAL;
         performSliderAction(slider.sliderType, slider.currentValue);
@@ -334,7 +333,7 @@ public class ViveRaycast : MonoBehaviour {
 
     }
 
-    void performToggleAction(ToggleLeap toggle)
+    void performToggleAction(DiageticToggle toggle)
     {
         if(toggle.toggleType == "dimensionality")
         {
@@ -351,7 +350,7 @@ public class ViveRaycast : MonoBehaviour {
 
     }
 
-    void UpdateToggleState(Collider collider, ToggleLeap toggle, Ray ray, Vector3 heading, Vector3 p, bool isActive, bool activeThisFrame, int handedness)
+    void UpdateToggleState(Collider collider, DiageticToggle toggle, Ray ray, Vector3 heading, Vector3 p, bool isActive, string handedness)
     {
         RaycastHit hit = new RaycastHit();
 
@@ -376,7 +375,7 @@ public class ViveRaycast : MonoBehaviour {
         }
     }
 
-    void UpdateSliderState(Collider collider, Slider slider, Ray ray, Vector3 heading, Vector3 p, bool isActive, bool activeThisFrame, int handedness){ // updating for both hands is screwing it up
+    void UpdateSliderState(Collider collider, DiageticSlider slider, Ray ray, Vector3 heading, Vector3 p, bool isActive, string handedness){ // updating for both hands is screwing it up
 
         RaycastHit hit = new RaycastHit ();
 
@@ -410,6 +409,7 @@ public class ViveRaycast : MonoBehaviour {
         }
     }
 
+    /*
     void HandleTwoHandedActions(CapsuleHand lHand, LeapPinchDetector lDetector, CapsuleHand rHand, LeapPinchDetector rDetector)
     {
         float palmDistance = lHand.hand_.PalmPosition.DistanceTo(rHand.hand_.PalmPosition);

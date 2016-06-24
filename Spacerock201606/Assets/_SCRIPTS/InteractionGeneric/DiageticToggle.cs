@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ToggleLeap : MonoBehaviour {
+public class DiageticToggle : MonoBehaviour {
 
 	private MeshRenderer myRenderer;
 
@@ -17,7 +17,7 @@ public class ToggleLeap : MonoBehaviour {
     // todo give this arbitrary number of states instead of 2?
     public bool on = false;
 
-    public int handUsed;
+    public string handUsed;
 
     public string trueString;
     public string falseString;

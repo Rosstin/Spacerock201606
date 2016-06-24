@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Slider : MonoBehaviour {
+public class DiageticSlider : MonoBehaviour {
 
 	public GameObject slider;
 	public GameObject min;
@@ -14,7 +14,7 @@ public class Slider : MonoBehaviour {
 	public int NORMAL = 0;
 	public int DRAGGING = 1;
 
-	public int handUsed;
+	public string handUsed;
 
 	public int maxValue = 30;
 	public int minValue = 0;
