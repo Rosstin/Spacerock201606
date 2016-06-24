@@ -8,8 +8,11 @@ public static class ConstantsSpacerock {
     public static string RIGHT = "RIGHT";
     public static string LEFT = "LEFT";
 
-    /*
+    // ~ FOR VIVERAYCAST.CS ~ //
+    public static float MOVE_MULTIPLIER = 6.0f;
+    public static int MOVE_DISTANCE_LOG_BASE = 2;
 
+        /*
 // ~ FOR HANDSRAYCAST.CS ~ //
 public static float SLIDER_MOVE_SPEED = 0.004f; // The speed at which slider bars scroll
 

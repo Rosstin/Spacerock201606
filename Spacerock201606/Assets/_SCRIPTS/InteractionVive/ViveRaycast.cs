@@ -193,7 +193,7 @@ public class ViveRaycast : MonoBehaviour {
 
                 // consider not interacting if the dotproduct is not large enough... below 0.9 or something
 
-                //float distanceOfGraph = (graphGenerator.nodeContainer.transform.position - p).magnitude; //TODO get the distance of graph and use that to move the container
+                //distanceOfGraph = (graphGenerator.nodeContainer.transform.position - p).magnitude; //TODO get the distance of graph and use that to move the container
                 //Vector3 graphHeading = Vector3.Normalize(p - playerCamera.transform.position);
 
                 // you could move it based on the selected node's delta position
@@ -224,7 +224,7 @@ public class ViveRaycast : MonoBehaviour {
 
                 Vector3 deltaNodePosition = originalNodePosition - currentNodePosition;
 
-                graphGenerator.nodeContainer.transform.position = controllerState.originalGraphGeneratorPosition - deltaNodePosition;
+                graphGenerator.nodeContainer.transform.position = controllerState.originalGraphGeneratorPosition - deltaNodePosition*ConstantsSpacerock.MOVE_MULTIPLIER*Mathf.Log(controllerState.originalNodeDistance, ConstantsSpacerock.MOVE_DISTANCE_LOG_BASE); // you could make it so that this multiplier gets greater when its farther away
 
                 //graphGenerator.nodeContainer.transform.position = controllerGameObjectLeft.transform.position + (graphHeadingL.normalized * distanceOfGraphL);
 
