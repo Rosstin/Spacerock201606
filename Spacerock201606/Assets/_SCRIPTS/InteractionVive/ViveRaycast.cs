@@ -283,10 +283,12 @@ public class ViveRaycast : MonoBehaviour {
                 turnPanelOffTimer += Time.deltaTime;
 
                 // if you're pinching, don't turn the panel off quite yet
-                //if (!(rightPinchDetectorScript.IsPinching || leftPinchDetectorScript.IsPinching) && turnPanelOffTimer >= PANEL_OFF_TIMER_CONSTANT) {
-                //    panelState = PANEL_OFF;
-                //    NeutralizeButtonState();
-                //}
+                if (
+                    //!(rightPinchDetectorScript.IsPinching || leftPinchDetectorScript.IsPinching) && 
+                    turnPanelOffTimer >= PANEL_OFF_TIMER_CONSTANT) {
+                    panelState = PANEL_OFF;
+                    NeutralizeButtonState();
+                }
             }
 
         } else if (panelState == PANEL_OFF) {
