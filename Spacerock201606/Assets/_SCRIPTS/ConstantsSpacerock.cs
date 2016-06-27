@@ -8,6 +8,11 @@ public static class ConstantsSpacerock {
     public static string RIGHT = "RIGHT";
     public static string LEFT = "LEFT";
 
+    // ~ FOR GENERATEGRAPH.CS ~ //
+    public static float GRAPH_SPREAD_MULTIPLIER = 0.005f; // the spread between nodes
+    public static float NODE_SCALE_MULTIPLIER = 0.10f; // the actual size of the nodes
+    public static float TOTAL_GRAPH_SCALE_MULTIPLIER = 0.50f; // modifies both spread and node size together
+
     // ~ FOR VIVERAYCAST.CS ~ //
     public static float MOVE_MULTIPLIER = 6.0f;
     public static int MOVE_DISTANCE_LOG_BASE = 2;

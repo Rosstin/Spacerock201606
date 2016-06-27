@@ -6,6 +6,7 @@ public class GenerateGraph : MonoBehaviour
 {
 
     public Camera playerCamera; //aka centereyeanchor
+    public Camera eagleEyeCamera;
 
     string nodeFileForCoroutine;
     string edgeFileForCoroutine;
@@ -27,8 +28,6 @@ public class GenerateGraph : MonoBehaviour
     float NODE_SPREAD_Z = 1.0f;
 
     public static float DISTANCE_FROM_FACE = -7.0f;
-
-    float GRAPH_SCALE_CONSTANT = 0.005f;
 
     public static int GRAPH_3D = 100;
     public static int GRAPH_2D = 101;
@@ -232,11 +231,8 @@ public class GenerateGraph : MonoBehaviour
         // add edges
         for (int i = 1; i < numberOfEdges; i++)
         {
-
             //Debug.Log ("outputGrid[0,i]: " + outputGrid[0,i] + "... " + "outputGrid[1,i]: " + outputGrid[1,i]);
-
             //print ("edgesGrid [0, i]: " + edgesGrid [0, i] + "... edgesGrid [1,i]: " + edgesGrid [1,i] );
-
             int source = nameToID[(edgesGrid[0, i])]; // source
             int target = nameToID[(edgesGrid[1, i])]; // target
             float weight = float.Parse(edgesGrid[2, i]);
@@ -278,12 +274,12 @@ public class GenerateGraph : MonoBehaviour
                 startIndexCoordinates = 8;
             }
 
-            float x_3d = float.Parse(myPositionsGrid[startIndexCoordinates, i]) * GRAPH_SCALE_CONSTANT;
-            float y_3d = float.Parse(myPositionsGrid[startIndexCoordinates + 1, i]) * GRAPH_SCALE_CONSTANT;
-            float z_3d = float.Parse(myPositionsGrid[startIndexCoordinates + 2, i]) * GRAPH_SCALE_CONSTANT;
+            float x_3d = float.Parse(myPositionsGrid[startIndexCoordinates, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
+            float y_3d = float.Parse(myPositionsGrid[startIndexCoordinates + 1, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
+            float z_3d = float.Parse(myPositionsGrid[startIndexCoordinates + 2, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
 
-            float x_2d = float.Parse(myPositionsGrid[startIndexCoordinates + 3, i]) * GRAPH_SCALE_CONSTANT;
-            float y_2d = float.Parse(myPositionsGrid[startIndexCoordinates + 4, i]) * GRAPH_SCALE_CONSTANT;
+            float x_2d = float.Parse(myPositionsGrid[startIndexCoordinates + 3, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
+            float y_2d = float.Parse(myPositionsGrid[startIndexCoordinates + 4, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
 
             if (dimensionality == GRAPH_3D)
             {
@@ -307,6 +303,12 @@ public class GenerateGraph : MonoBehaviour
                 Instantiate(Resources.Load("Node") as GameObject,
                     position,
                     Quaternion.identity) as GameObject;
+
+            //don't do getcomp live
+            LayerSelfBasedOnRelativeLocations layerScript = myNodeInstance.GetComponent<LayerSelfBasedOnRelativeLocations>();
+            layerScript.eagleEyeCamera = eagleEyeCamera;
+            layerScript.headsetLocation = playerCamera;
+
 
             NodeForce nodeScript = myNodeInstance.GetComponent<NodeForce>();
 
@@ -404,9 +406,9 @@ public class GenerateGraph : MonoBehaviour
             // give the group its centroid
 
 
-            float x_3d = float.Parse(metaGrid[1, i]) * GRAPH_SCALE_CONSTANT;
-            float y_3d = float.Parse(metaGrid[2, i]) * GRAPH_SCALE_CONSTANT;
-            float z_3d = float.Parse(metaGrid[3, i]) * GRAPH_SCALE_CONSTANT;
+            float x_3d = float.Parse(metaGrid[1, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
+            float y_3d = float.Parse(metaGrid[2, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
+            float z_3d = float.Parse(metaGrid[3, i]) * ConstantsSpacerock.GRAPH_SPREAD_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER;
 
             GameObject centroidGameObject =
                 Instantiate(Resources.Load("GroupCentroid") as GameObject,

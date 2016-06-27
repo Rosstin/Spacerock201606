@@ -30,6 +30,7 @@ GameObject:
   - 23: {fileID: 2359978}
   - 114: {fileID: 11452734}
   - 114: {fileID: 11416890}
+  - 114: {fileID: 11436816}
   m_Layer: 0
   m_Name: Node
   m_TagString: Draggable
@@ -120,7 +121,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 174136}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!102 &10283208
 TextMesh:
   serializedVersion: 3
@@ -153,6 +154,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc68e9e0b2c3eb43b729c0e0acdfd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11436816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 174136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790951cec86fc5b43ac81beed1711baf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eagleEyeCamera: {fileID: 0}
+  headsetLocation: {fileID: 0}
 --- !u!114 &11452734
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -134,7 +134,7 @@ public class Nodelike : MonoBehaviour {
 
     public void SetScaleFromDegree(int degree)
     {
-        SetScale(Mathf.Log(degree) / 10.0f);
+        SetScale(Mathf.Log(degree) * ConstantsSpacerock.NODE_SCALE_MULTIPLIER * ConstantsSpacerock.TOTAL_GRAPH_SCALE_MULTIPLIER);
     }
 
     public void SetColor(Color newColor)
@@ -247,9 +247,9 @@ public class Nodelike : MonoBehaviour {
         //colors.Add (new Color(0.0f, 1.0f, 1.0f, 1.0f));
         //colors.Add (new Color(0.0f, 0.5f, 1.0f, 1.0f));
         colors.Add(new Color(0.0f, 0.0f, 1.0f, 1.0f));
-        colors.Add(new Color(0.5f, 0.0f, 1.0f, 1.0f));
-        colors.Add(new Color(1.0f, 0.0f, 1.0f, 1.0f));
-        colors.Add(new Color(1.0f, 0.0f, 0.5f, 1.0f));
+        //colors.Add(new Color(0.5f, 0.0f, 1.0f, 1.0f));
+        //colors.Add(new Color(1.0f, 0.0f, 1.0f, 1.0f));
+        //colors.Add(new Color(1.0f, 0.0f, 0.5f, 1.0f));
 
 
 

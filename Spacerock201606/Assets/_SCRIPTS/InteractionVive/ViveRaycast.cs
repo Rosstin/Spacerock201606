@@ -9,9 +9,13 @@ public class ViveRaycast : MonoBehaviour {
 
     public GameObject controllerGameObjectLeft;
     private SteamVR_TestThrow wandLeft;
+    private WandRay wandRayL;
+    LineRenderer lineL;
 
     public GameObject controllerGameObjectRight;
     private SteamVR_TestThrow wandRight;
+    public WandRay wandRayR;
+    LineRenderer lineR;
 
     public GameObject toggle3DGameObject;
     Collider toggle3DCollider;
@@ -30,9 +34,9 @@ public class ViveRaycast : MonoBehaviour {
 
     public GameObject infravisionQuad;
 
-    public GameObject rightCapsuleHandObject;
+    //public GameObject rightCapsuleHandObject;
     //CapsuleHand rightCapsuleHandScript;
-    public GameObject leftCapsuleHandObject;
+    //public GameObject leftCapsuleHandObject;
     //CapsuleHand leftCapsuleHandScript;
 
     float SLIDER_MOVE_SPEED = 0.004f;
@@ -89,7 +93,9 @@ public class ViveRaycast : MonoBehaviour {
         graphGenerator = this.gameObject.GetComponent<GenerateGraph> ();
 
         wandLeft = controllerGameObjectLeft.GetComponent<SteamVR_TestThrow>();
+        wandRayL = controllerGameObjectLeft.GetComponent<WandRay>();
         wandRight = controllerGameObjectRight.GetComponent<SteamVR_TestThrow>();
+        wandRayR = controllerGameObjectLeft.GetComponent<WandRay>();
 
         toggle3DCollider = toggle3DGameObject.GetComponent<Collider> ();
         toggle3Dscript = toggle3DGameObject.GetComponent<DiageticToggle>();
@@ -129,16 +135,22 @@ public class ViveRaycast : MonoBehaviour {
 
     void ControllerUpdate(SteamVR_TestThrow wand, string handedness)
     {
+        //Vector3 heading = new Vector3( Mathf.PI / 2 - wand.gameObject.transform.rotation.eulerAngles.x/360.0f, Mathf.PI / 2 - wand.gameObject.transform.rotation.eulerAngles.y / 360.0f, Mathf.PI / 2 - wand.gameObject.transform.rotation.eulerAngles.z / 360.0f);
+
+        //Vector3 heading = Quaternion.AngleAxis(-33, Vector3.left) * wand.transform.forward;
+
         HandleInteraction(wand.triggerPress, wand.gameObject.transform.position, handedness);
+        //HandleInteraction(wand.triggerPress, wand.gameObject.transform.position, heading, handedness);
     }
 
-    void HandleInteraction(bool isActive, Vector3 positionOfInteractable, string handedness)
+    void HandleInteraction(bool isActive, Vector3 origin /*, Vector3 heading, */, string handedness)
     {
 
-        Vector3 p = positionOfInteractable;
+        Vector3 p = origin;
 
         // camera to pinch vector
         Vector3 heading = Vector3.Normalize(p - playerCamera.transform.position);
+        //Debug.Log(heading);
 
         // camera to object vector
         Vector3 objectVector;
@@ -181,8 +193,17 @@ public class ViveRaycast : MonoBehaviour {
 
                 for (int i = 0; i < graphGenerator.masterNodeList.Length; i++) {
                     if (graphGenerator.isLegalNode(graphGenerator.masterNodeList[i])) {
-                        objectVector = Vector3.Normalize (graphGenerator.masterNodeList[i].gameObject.transform.position - playerCamera.transform.position);
+                        objectVector = Vector3.Normalize (graphGenerator.masterNodeList[i].gameObject.transform.position - p);
                         dotProduct = Vector3.Dot (heading, objectVector);
+
+                        Vector3 endRayPosition = p + (heading.normalized * 100.0f);
+
+                        /*
+                        myLineRenderer.SetVertexCount(2);
+                        myLineRenderer.SetPosition(0, p);
+                        myLineRenderer.SetPosition(1, endRayPosition);
+                        myLineRenderer.enabled = true;
+                        */
 
                         if (dotProduct > biggestDotProduct) { // dont select nodes that are not visible
                             biggestDotProduct = dotProduct;
@@ -204,7 +225,7 @@ public class ViveRaycast : MonoBehaviour {
                 controllerState.highlightedObject = graphGenerator.masterNodeList[selectedNodeIndex];
                 controllerState.highlightedObject.nodeForce.Selected();
 
-                controllerState.originalControllerPosition = positionOfInteractable;
+                controllerState.originalControllerPosition = p;
 
                 controllerState.originalGraphGeneratorPosition = graphGenerator.nodeContainer.transform.position;
 
@@ -220,7 +241,7 @@ public class ViveRaycast : MonoBehaviour {
                 }
 
                 Vector3 originalNodePosition = controllerState.originalControllerPosition + (controllerState.originalNodeHeading.normalized * controllerState.originalNodeDistance);
-                Vector3 currentNodePosition = positionOfInteractable + (controllerState.originalNodeHeading.normalized * controllerState.originalNodeDistance); //then change it so that heading is not replicated
+                Vector3 currentNodePosition = p + (controllerState.originalNodeHeading.normalized * controllerState.originalNodeDistance); //then change it so that heading is not replicated
 
                 Vector3 deltaNodePosition = originalNodePosition - currentNodePosition;
 
@@ -230,7 +251,7 @@ public class ViveRaycast : MonoBehaviour {
 
             }
 
-            if (!isActive) { // if you let go you're not dragging
+            if (!isActive && graphGenerator.masterNodeList != null) { // if you let go you're not dragging
                 controllerState.state = ControllerState.STATE_NORMAL;
 
                 for (int i = 0; i < graphGenerator.masterNodeList.Length; i++)
