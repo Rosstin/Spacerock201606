@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 939e9a2214e37ec4e8eb4fe85d074704, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2616,6 +2616,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1621128257}
   m_RootOrder: 0
+--- !u!1001 &1453239405
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -500
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -23.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -500
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 405844, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 111798, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 21a2dff3d3253a24995d56ed2adc392d, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1496455575 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 148384, guid: c59f5a6ae762e8243a8df47f53fecd69, type: 2}
@@ -3712,7 +3758,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &2032672590
 MeshRenderer:
   m_ObjectHideFlags: 0

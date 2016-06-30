@@ -17,7 +17,17 @@ public static class ConstantsSpacerock {
     public static float MOVE_MULTIPLIER = 6.0f;
     public static int MOVE_DISTANCE_LOG_BASE = 2;
 
-        /*
+    // ~ FOR MIXED REALITY CAMERA THINGS ~ //
+    public static int DEFAULT_LAYER = 0;
+    public static int FOREGROUND_LAYER = 8;
+    public static int INTERSTITIAL_LAYER = 9;
+
+    public static int FIXED_UPDATE_FRAMES_DELAY = 30;
+    public static int FIXED_UPDATE_PERCENT_FRAMES_SEEN = 2;
+
+    public static int INTERSTITIAL_FRAMES = 22;
+
+    /*
 // ~ FOR HANDSRAYCAST.CS ~ //
 public static float SLIDER_MOVE_SPEED = 0.004f; // The speed at which slider bars scroll
 
@@ -70,12 +80,7 @@ public static float NODE_SPREAD_Y = 0.8f;
 public static float PULL_CONSTANT = 17.0f; // LeapRTS.cs uses this to determine the sensitivity of pulling objects towards you or pushing them away
 */
 
-    // ~ FOR MIXED REALITY CAMERA THINGS ~ //
-    public static int DEFAULT_LAYER = 0;
-    public static int FOREGROUND_LAYER = 8;
 
-    public static int FIXED_UPDATE_FRAMES_DELAY = 30;
-    public static int FIXED_UPDATE_PERCENT_FRAMES_SEEN = 2;
 
 
 }

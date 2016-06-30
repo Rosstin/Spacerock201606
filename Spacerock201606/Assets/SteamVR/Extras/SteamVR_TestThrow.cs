@@ -24,7 +24,6 @@ public class SteamVR_TestThrow : MonoBehaviour
         triggerPress = device.GetPress(SteamVR_Controller.ButtonMask.Trigger);
 
         // make an object to throw
-        /*
         if (joint == null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
             var go = GameObject.Instantiate(prefab);
@@ -60,6 +59,5 @@ public class SteamVR_TestThrow : MonoBehaviour
 
             rigidbody.maxAngularVelocity = rigidbody.angularVelocity.magnitude;
         }
-        */
     }
 }

@@ -10,6 +10,8 @@ public class LayerSelfBasedOnRelativeLocations : MonoBehaviour {
     int STATE_IS_DEFAULT = 101;
     int STATE_IS_FOREGROUND = 102;
 
+    int interstitial = 0;
+
     // Use this for initialization
     void Start () {
     
@@ -21,10 +23,23 @@ public class LayerSelfBasedOnRelativeLocations : MonoBehaviour {
         // if the distance between you and the camera is less than the distance between the player and the camera, be foreground
         if(Vector3.Distance(this.transform.position, eagleEyeCamera.transform.position) < Vector3.Distance(headsetLocation.transform.position, eagleEyeCamera.transform.position))
         {
-
             if(state != STATE_IS_FOREGROUND) { 
-                SetLayerRecursively(this.gameObject, ConstantsSpacerock.FOREGROUND_LAYER);
-                state = STATE_IS_FOREGROUND;
+
+                if(interstitial == 0)
+                {
+                    SetLayerRecursively(this.gameObject, ConstantsSpacerock.INTERSTITIAL_LAYER);
+                    interstitial++;
+                }
+                else if(interstitial < ConstantsSpacerock.INTERSTITIAL_FRAMES)
+                {
+                    interstitial++;
+                }
+                else
+                {
+                    interstitial = 0;
+                    SetLayerRecursively(this.gameObject, ConstantsSpacerock.FOREGROUND_LAYER);
+                    state = STATE_IS_FOREGROUND;
+                }
             }
 
         }
@@ -33,8 +48,22 @@ public class LayerSelfBasedOnRelativeLocations : MonoBehaviour {
         {
             if (state != STATE_IS_DEFAULT)
             {
-                SetLayerRecursively(this.gameObject, ConstantsSpacerock.DEFAULT_LAYER);
-                state = STATE_IS_DEFAULT;
+
+                if (interstitial == 0)
+                {
+                    SetLayerRecursively(this.gameObject, ConstantsSpacerock.INTERSTITIAL_LAYER);
+                    interstitial++;
+                }
+                else if (interstitial < ConstantsSpacerock.INTERSTITIAL_FRAMES)
+                {
+                    interstitial++;
+                }
+                else
+                {
+                    interstitial = 0;
+                    SetLayerRecursively(this.gameObject, ConstantsSpacerock.DEFAULT_LAYER);
+                    state = STATE_IS_DEFAULT;
+                }
             }
         }
     }
