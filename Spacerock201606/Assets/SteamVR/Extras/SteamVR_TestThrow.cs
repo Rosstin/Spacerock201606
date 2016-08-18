@@ -46,6 +46,25 @@ public class SteamVR_TestThrow : MonoBehaviour
             item.SetTitle(" ->2D  3D");
             graphGenerator.changeNodeDimensionality(GenerateGraph.GRAPH_2D);
         }
+
+
+        //graphGenerator.NodeDegree = 5;
+        //graphGenerator.showLegalNodesBasedOnFilterSettings();
+
+
+
+
+        return 1;
+    }
+
+    int setNodeDegree(RMMenuItem item)
+    {
+        print("Clicked: " + item.index);
+
+        graphGenerator.NodeDegree = 7;
+        graphGenerator.showLegalNodesBasedOnFilterSettings();
+
+        item.SetTitle("Node Degree > 7");
         return 1;
     }
 
@@ -58,7 +77,7 @@ public class SteamVR_TestThrow : MonoBehaviour
         items[0] = item1.GetComponent<RMMenuItem>();
         items[0].onClick = clicked2D3D;
         items[1] = item2.GetComponent<RMMenuItem>();
-        items[1].onClick = onClick;
+        items[1].onClick = setNodeDegree;
         items[2] = item3.GetComponent<RMMenuItem>();
         items[2].onClick = onClick;
 
